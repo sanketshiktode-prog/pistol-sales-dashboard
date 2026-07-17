@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pune Operations Dashboard</title>
+<link rel="icon" href="data:image/webp;base64,UklGRigFAABXRUJQVlA4IBwFAADQIgCdASq0ALQAPkkkj0UioiEUKfQIKASEsbdnz6vAZeGabDj8r1qPvvJ69FxmXAnIX+s+3n6Uf031W/if/ae4B/dP6n+pvWP8wH7X/tH7qn+K/x3sI9AD+ff3H1OP9d7FX9e/53sM/sZ6af7X/DH+537He2Q79fsApRH9C4gOMXHkHyFcvnAztYrdpP98qrAP7Bryp6W8AHby2ccDxKQksdSaalCxV56IUhMl45xFrogxJzlWAf2YbME11Qf3eXFH4XxJ3FS3+DWOe/rLeAGPNhvuHAf3DVtZLD8afzpcwoSnapB3qm6wDe10KD+y3Ei3+bomYcwo46GeEEexKLgZN+LaRlPatUMgHfQDfdRA2Rfkwix6g9iUhQ7nwLqQAAD+/5D5j/fDPlLqduWSpxnzPlGDLOmds+vMX1jFrgFn/LTe8KKhYRt3t539tgls3SxTj0HsgJ0nAK/5P+K6L6s4LjYKMw8XCrK4NwvIAVaoHHBv98U9ASyeNbTqf5sLiyqGSb92H4ubn3N8uMVeH5fvs4ygq3Dr32hJccb1rPwnXvww//6Dys7/Nz4VAK1NjVEz5PJHaxDiRgBscN6nMZpS5hn84a535v8puHOCLOnzw74v2uGjv3c3TRjocgIXgSwwbIGpI+AKP0ykgETif5plVLxwcou8AWjARo6C2xFmt0spMHVoUR80/EXz2VfsvzEJJfA+W76Qb8hCvAnq1lnOFnr9Zpl3uBQ2/mTsBMoNfNzF1xsRpfCAVsj0MVUyfhkukUbeetbWs40hAcg9I+ViwCLyC3OveyyY9cNx+dd2wmO33d2P9ONi0yTuybV6FcfA6ADXNvYplf0MPD1L87DJ8nAvh4CEsr53PgtR0SFm7e3yez+LJjN0iff4XOB3UQR5Sv0AvxG7guupsx4bqGskDGC3Wo0s8tOEIg/3HXCSXhhN4rhsmSgLcvZH1YDb+sbdv9JjLQGPZnMDWXeFG4hyoOS7Rr+oA5hi27ccI+v+lwF1x5tgMpnXkoIHZGto9Mp+MkJOja75zf+oI4akuSrTiH0uLaab7viW2jan7boECs76YwSO4yD1017MWLqXVhEc4Ih2FGKxmCfedwnq2zhYK/4n1m25jBbhIo5OYBRBVn6HYPQWjkNAsDbYYE3KwJTsyF784UYn6pY3UcPlE5ZbtTW9u+IhrP+zr0n7DCEYokeHtbqE2zUcXRMdU7jR/dUxDvPgg0gVxiOThYi1MjI/rLSs9PGsgEm3cCeepTQb3D0hWe7DpjOAz7fwFQH4xmq4KTB7wKyS7ZDQ3ysby8suhvHDyP+GTgku/sul7/sLitGcaNHZBfYRsNQkExvTeL0jS+hx2U0acbW2js0ZgM57uNAh9kgRNfEdHH/Z4K3ggdpBkejJG22wwqfgyWJN9rPdBkTg5b/QjgXgv8yIJWK68dkkdA2AG6BeOFMKKBX0t3tCanCTYVA0lObIRYCniCDeVmWwj+ygnA0jrP4H+fnfY70z3qd6sLrCWZRDM6/jhTiYD7tGyDpjrkKU9k1UUZOSNVnbdgxwmFtqDkaPHiLMVvAqiz9XqSefPOLvZl/BC4grFyxm2jQOqlTwpSSnr37ckCM3sX3hMAJWGg1htVO04KbC8oK7fwcNIbcwXhZaJdmfRV55bq1Z8zsMJgN737l9SRZMiMTCy48Z3ZlvitsrXpcX1AluUEAmW5bciDfk3yavTUJAZwKWAOWLMcDUKazDxgABa6yj8AAAAAA=" type="image/webp">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0c0c0f; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #16161a; }
+  ::-webkit-scrollbar-thumb { background: #e8772e; border-radius: 3px; }
+  select option { background: #16161a; color: #e8e8ec; }
+  table { border-spacing: 0; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader { width: 32px; height: 32px; border: 3px solid #2a2a32; border-top-color: #e8772e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script type="text/babel">
+const { useState, useMemo, useEffect } = React;
+
+// ─── CONFIG ───
+const SHEET_ID = "1_yDaM_fHZ1HDQELQNaFTCQunTg2a0ZV-IVhn4h6BXg8";
+const EMP_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSW8ZT9lLwpXLrFkEDo2328ufUvaPv-Z4lk5MsbW4WmMVJpNKwiKm2zCZ5arWZVIDSmcpzY4t5TY-jI/pub?gid=478079231&single=true&output=csv";
+const PROJ_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSW8ZT9lLwpXLrFkEDo2328ufUvaPv-Z4lk5MsbW4WmMVJpNKwiKm2zCZ5arWZVIDSmcpzY4t5TY-jI/pub?gid=61736977&single=true&output=csv";
+
+// ─── FALLBACK DATA (used if Google Sheets fetch fails) ───
+const FALLBACK_EMP = {"Rahul": {"Jan": [{"name": "Sakshi Bhatele","leads": 196,"ql": 47,"leadToQL": 24.0,"visit": 6,"qlToVisit": 12.8,"booking": 2,"visitToBooking": 33.3,"qlToBooking": 4.3,"spend": 177882.0,"revenue": 334000.0,"roas": 1.88,"pipeline": 0.0},{"name": "Hina Shinde","leads": 143,"ql": 64,"leadToQL": 44.8,"visit": 12,"qlToVisit": 18.8,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 108997.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Rakesh Chintakindi","leads": 164,"ql": 40,"leadToQL": 24.4,"visit": 9,"qlToVisit": 22.5,"booking": 5,"visitToBooking": 55.6,"qlToBooking": 12.5,"spend": 145962.0,"revenue": 2075886.0,"roas": 14.22,"pipeline": 0.0},{"name": "Priyanka Kushare","leads": 163,"ql": 65,"leadToQL": 39.9,"visit": 12,"qlToVisit": 18.5,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 168315.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Akash Tak","leads": 137,"ql": 60,"leadToQL": 43.8,"visit": 16,"qlToVisit": 26.7,"booking": 2,"visitToBooking": 12.5,"qlToBooking": 3.3,"spend": 107953.0,"revenue": 536750.0,"roas": 4.97,"pipeline": 0.0},{"name": "Veena Gawhade","leads": 118,"ql": 44,"leadToQL": 37.3,"visit": 7,"qlToVisit": 15.9,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 92820.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Rohan Donhe","leads": 184,"ql": 107,"leadToQL": 58.2,"visit": 16,"qlToVisit": 15.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 174390.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Ansh Jaiswal","leads": 121,"ql": 71,"leadToQL": 58.7,"visit": 13,"qlToVisit": 18.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 101967.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Akhilesh Sanjay Malthane","leads": 105,"ql": 59,"leadToQL": 56.2,"visit": 15,"qlToVisit": 25.4,"booking": 1,"visitToBooking": 6.7,"qlToBooking": 1.7,"spend": 95498.0,"revenue": 198326.0,"roas": 2.08,"pipeline": 0.0},{"name": "Kunal Hemraj Patil","leads": 64,"ql": 37,"leadToQL": 57.8,"visit": 5,"qlToVisit": 13.5,"booking": 1,"visitToBooking": 20.0,"qlToBooking": 2.7,"spend": 41790.0,"revenue": 170737.0,"roas": 4.09,"pipeline": 0.0},{"name": "Anjali Shaw","leads": 1,"ql": 1,"leadToQL": 100.0,"visit": 1,"qlToVisit": 100.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 0.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Aryan Swarnkar","leads": 1,"ql": 1,"leadToQL": 100.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 1356.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0}],"Feb": [{"name": "Sakshi Bhatele","leads": 142,"ql": 36,"leadToQL": 25.4,"visit": 4,"qlToVisit": 11.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 83473.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Hina Shinde","leads": 248,"ql": 97,"leadToQL": 39.1,"visit": 12,"qlToVisit": 12.4,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 211934.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Rakesh Chintakindi","leads": 57,"ql": 8,"leadToQL": 14.0,"visit": 4,"qlToVisit": 50.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 37267.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Priyanka Kushare","leads": 207,"ql": 66,"leadToQL": 31.9,"visit": 13,"qlToVisit": 19.7,"booking": 2,"visitToBooking": 15.4,"qlToBooking": 3.0,"spend": 168451.0,"revenue": 935499.0,"roas": 5.55,"pipeline": 0.0},{"name": "Akash Tak","leads": 109,"ql": 30,"leadToQL": 27.5,"visit": 3,"qlToVisit": 10.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 76425.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Veena Gawhade","leads": 113,"ql": 54,"leadToQL": 47.8,"visit": 8,"qlToVisit": 14.8,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 53333.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Rohan Donhe","leads": 105,"ql": 52,"leadToQL": 49.5,"visit": 7,"qlToVisit": 13.5,"booking": 1,"visitToBooking": 14.3,"qlToBooking": 1.9,"spend": 108149.0,"revenue": 149016.0,"roas": 1.38,"pipeline": 0.0},{"name": "Ansh Jaiswal","leads": 50,"ql": 25,"leadToQL": 50.0,"visit": 4,"qlToVisit": 16.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 49571.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Akhilesh Sanjay Malthane","leads": 83,"ql": 35,"leadToQL": 42.2,"visit": 6,"qlToVisit": 17.1,"booking": 1,"visitToBooking": 16.7,"qlToBooking": 2.9,"spend": 62383.0,"revenue": 500000.0,"roas": 8.02,"pipeline": 0.0},{"name": "Kunal Hemraj Patil","leads": 181,"ql": 87,"leadToQL": 48.1,"visit": 13,"qlToVisit": 14.9,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 134537.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Anjali Shaw","leads": 22,"ql": 1,"leadToQL": 4.5,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 12927.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Aryan Swarnkar","leads": 1,"ql": 1,"leadToQL": 100.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 558.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0}],"Mar": [{"name": "Sakshi Bhatele","leads": 66,"ql": 12,"leadToQL": 18.2,"visit": 1,"qlToVisit": 8.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 15546.0,"revenue": 0.0,"roas": 0.0,"pipeline": 120495.0},{"name": "Hina Shinde","leads": 94,"ql": 42,"leadToQL": 44.7,"visit": 8,"qlToVisit": 19.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 12394.0,"revenue": 0.0,"roas": 0.0,"pipeline": 198575.0},{"name": "Rakesh Chintakindi","leads": 72,"ql": 28,"leadToQL": 38.9,"visit": 2,"qlToVisit": 7.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 44218.0,"revenue": 0.0,"roas": 0.0,"pipeline": 184440.0},{"name": "Priyanka Kushare","leads": 61,"ql": 17,"leadToQL": 27.9,"visit": 1,"qlToVisit": 5.9,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 30261.0,"revenue": 0.0,"roas": 0.0,"pipeline": 102325.0},{"name": "Akash Tak","leads": 109,"ql": 29,"leadToQL": 26.6,"visit": 3,"qlToVisit": 10.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 58708.0,"revenue": 0.0,"roas": 0.0,"pipeline": 193860.0},{"name": "Veena Gawhade","leads": 89,"ql": 26,"leadToQL": 29.2,"visit": 4,"qlToVisit": 15.4,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 54055.0,"revenue": 0.0,"roas": 0.0,"pipeline": 197955.0},{"name": "Rohan Donhe","leads": 53,"ql": 22,"leadToQL": 41.5,"visit": 2,"qlToVisit": 9.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 45196.0,"revenue": 0.0,"roas": 0.0,"pipeline": 164310.0},{"name": "Ansh Jaiswal","leads": 32,"ql": 11,"leadToQL": 34.4,"visit": 1,"qlToVisit": 9.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 16370.0,"revenue": 0.0,"roas": 0.0,"pipeline": 125940.0},{"name": "Akhilesh Sanjay Malthane","leads": 82,"ql": 20,"leadToQL": 24.4,"visit": 2,"qlToVisit": 10.0,"booking": 1,"visitToBooking": 50.0,"qlToBooking": 5.0,"spend": 36160.0,"revenue": 101296.0,"roas": 2.8,"pipeline": 137715.0},{"name": "Kunal Hemraj Patil","leads": 97,"ql": 30,"leadToQL": 30.9,"visit": 6,"qlToVisit": 20.0,"booking": 1,"visitToBooking": 16.7,"qlToBooking": 3.3,"spend": 52511.0,"revenue": 210000.0,"roas": 4.0,"pipeline": 293350.0},{"name": "Abhishek Sahitya","leads": 3,"ql": 2,"leadToQL": 66.7,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 0.0,"revenue": 0.0,"roas": 0.0,"pipeline": 4200.0},{"name": "Anjali Shaw","leads": 38,"ql": 16,"leadToQL": 42.1,"visit": 8,"qlToVisit": 50.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 28730.0,"revenue": 0.0,"roas": 0.0,"pipeline": 62130.0},{"name": "Aryan Swarnkar","leads": 6,"ql": 3,"leadToQL": 50.0,"visit": 1,"qlToVisit": 33.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 904.0,"revenue": 0.0,"roas": 0.0,"pipeline": 8400.0}]},"Kiran Kumar": {"Jan": [{"name": "Nyasha Gupta","leads": 334,"ql": 119,"leadToQL": 35.6,"visit": 5,"qlToVisit": 4.2,"booking": 1,"visitToBooking": 20.0,"qlToBooking": 0.8,"spend": 205033.0,"revenue": 275000.0,"roas": 1.34,"pipeline": 0.0},{"name": "Saurabh Pravin Patil","leads": 148,"ql": 77,"leadToQL": 52.0,"visit": 9,"qlToVisit": 11.7,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 69668.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Abhishek Rameshrao Trimukhe","leads": 25,"ql": 15,"leadToQL": 60.0,"visit": 3,"qlToVisit": 20.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 14068.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Om Ganesh Shahane","leads": 31,"ql": 17,"leadToQL": 54.8,"visit": 8,"qlToVisit": 47.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 21558.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Ruchi Parihar","leads": 21,"ql": 19,"leadToQL": 90.5,"visit": 6,"qlToVisit": 31.6,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 8061.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Insu Patle","leads": 1,"ql": 1,"leadToQL": 100.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 381.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Abhinav Morone","leads": 3,"ql": 3,"leadToQL": 100.0,"visit": 1,"qlToVisit": 33.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 3219.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Aman Gupta","leads": 6,"ql": 4,"leadToQL": 66.7,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2805.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Bhavesh Parmar","leads": 10,"ql": 6,"leadToQL": 60.0,"visit": 3,"qlToVisit": 50.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 11021.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Siddhi Ajay Chordiya","leads": 6,"ql": 4,"leadToQL": 66.7,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 1870.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Dikshita Prakash Patil","leads": 1,"ql": 1,"leadToQL": 100.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 0.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0}],"Feb": [{"name": "Nyasha Gupta","leads": 56,"ql": 12,"leadToQL": 21.4,"visit": 3,"qlToVisit": 25.0,"booking": 1,"visitToBooking": 33.3,"qlToBooking": 8.3,"spend": 61122.0,"revenue": 273000.0,"roas": 4.47,"pipeline": 0.0},{"name": "Saurabh Pravin Patil","leads": 83,"ql": 20,"leadToQL": 24.1,"visit": 4,"qlToVisit": 20.0,"booking": 1,"visitToBooking": 25.0,"qlToBooking": 5.0,"spend": 111138.0,"revenue": 253000.0,"roas": 2.28,"pipeline": 0.0},{"name": "Abhishek Rameshrao Trimukhe","leads": 130,"ql": 40,"leadToQL": 30.8,"visit": 7,"qlToVisit": 17.5,"booking": 2,"visitToBooking": 28.6,"qlToBooking": 5.0,"spend": 109786.0,"revenue": 435135.0,"roas": 3.96,"pipeline": 0.0},{"name": "Om Ganesh Shahane","leads": 161,"ql": 89,"leadToQL": 55.3,"visit": 7,"qlToVisit": 7.9,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 120704.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Ruchi Parihar","leads": 15,"ql": 8,"leadToQL": 53.3,"visit": 3,"qlToVisit": 37.5,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 8197.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Insu Patle","leads": 24,"ql": 11,"leadToQL": 45.8,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 8047.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Abhinav Morone","leads": 20,"ql": 9,"leadToQL": 45.0,"visit": 1,"qlToVisit": 11.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 14886.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Aman Gupta","leads": 21,"ql": 9,"leadToQL": 42.9,"visit": 1,"qlToVisit": 11.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 15416.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Bhavesh Parmar","leads": 36,"ql": 11,"leadToQL": 30.6,"visit": 1,"qlToVisit": 9.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 39716.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Siddhi Ajay Chordiya","leads": 22,"ql": 5,"leadToQL": 22.7,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 15325.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Dikshita Prakash Patil","leads": 21,"ql": 6,"leadToQL": 28.6,"visit": 1,"qlToVisit": 16.7,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 17054.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0}],"Mar": [{"name": "Nyasha Gupta","leads": 27,"ql": 9,"leadToQL": 33.3,"visit": 1,"qlToVisit": 11.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 29194.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Saurabh Pravin Patil","leads": 29,"ql": 7,"leadToQL": 24.1,"visit": 2,"qlToVisit": 28.6,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 23576.0,"revenue": 0.0,"roas": 0.0,"pipeline": 250000.0},{"name": "Abhishek Rameshrao Trimukhe","leads": 121,"ql": 51,"leadToQL": 42.1,"visit": 8,"qlToVisit": 15.7,"booking": 1,"visitToBooking": 12.5,"qlToBooking": 2.0,"spend": 78508.0,"revenue": 275000.0,"roas": 3.5,"pipeline": 300000.0},{"name": "Om Ganesh Shahane","leads": 116,"ql": 57,"leadToQL": 49.1,"visit": 5,"qlToVisit": 8.8,"booking": 1,"visitToBooking": 20.0,"qlToBooking": 1.8,"spend": 103968.0,"revenue": 360000.0,"roas": 3.46,"pipeline": 250000.0},{"name": "Ruchi Parihar","leads": 5,"ql": 1,"leadToQL": 20.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2098.0,"revenue": 0.0,"roas": 0.0,"pipeline": 250000.0},{"name": "Insu Patle","leads": 20,"ql": 9,"leadToQL": 45.0,"visit": 3,"qlToVisit": 33.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2184.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Abhinav Morone","leads": 7,"ql": 3,"leadToQL": 42.9,"visit": 1,"qlToVisit": 33.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2683.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Aman Gupta","leads": 30,"ql": 15,"leadToQL": 50.0,"visit": 4,"qlToVisit": 26.7,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 22038.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Bhavesh Parmar","leads": 40,"ql": 7,"leadToQL": 17.5,"visit": 2,"qlToVisit": 28.6,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 33016.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Siddhi Ajay Chordiya","leads": 36,"ql": 11,"leadToQL": 30.6,"visit": 4,"qlToVisit": 36.4,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 20662.0,"revenue": 0.0,"roas": 0.0,"pipeline": 300000.0},{"name": "Dikshita Prakash Patil","leads": 18,"ql": 1,"leadToQL": 5.6,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 14174.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0}]},"Nikhil": {"Jan": [{"name": "Rushikesh Bapurao Gurude","leads": 180,"ql": 55,"leadToQL": 30.6,"visit": 7,"qlToVisit": 12.7,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 86537.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Pratik Dash","leads": 64,"ql": 32,"leadToQL": 50.0,"visit": 7,"qlToVisit": 21.9,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 39614.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Shameez Shahzad Sayed","leads": 112,"ql": 29,"leadToQL": 25.9,"visit": 4,"qlToVisit": 13.8,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 49047.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Yash Mangesh Nikumbh","leads": 22,"ql": 9,"leadToQL": 40.9,"visit": 2,"qlToVisit": 22.2,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 25763.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Kratika Raghuwanshi","leads": 58,"ql": 15,"leadToQL": 25.9,"visit": 2,"qlToVisit": 13.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 32657.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Vaishnavi Gawde","leads": 1,"ql": 1,"leadToQL": 100.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 0.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Neha Prakash Khairnar","leads": 3,"ql": 3,"leadToQL": 100.0,"visit": 1,"qlToVisit": 33.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 947.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Ashish lalwani","leads": 2,"ql": 2,"leadToQL": 100.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2211.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0}],"Feb": [{"name": "Rushikesh Bapurao Gurude","leads": 142,"ql": 55,"leadToQL": 38.7,"visit": 9,"qlToVisit": 16.4,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 67115.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Pratik Dash","leads": 149,"ql": 70,"leadToQL": 47.0,"visit": 9,"qlToVisit": 12.9,"booking": 1,"visitToBooking": 11.1,"qlToBooking": 1.4,"spend": 55052.0,"revenue": 350000.0,"roas": 6.36,"pipeline": 0.0},{"name": "Shameez Shahzad Sayed","leads": 142,"ql": 60,"leadToQL": 42.3,"visit": 9,"qlToVisit": 15.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 77246.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Yash Mangesh Nikumbh","leads": 36,"ql": 13,"leadToQL": 36.1,"visit": 1,"qlToVisit": 7.7,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 18077.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Kratika Raghuwanshi","leads": 142,"ql": 48,"leadToQL": 33.8,"visit": 5,"qlToVisit": 10.4,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 50672.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Vaishnavi Gawde","leads": 56,"ql": 15,"leadToQL": 26.8,"visit": 1,"qlToVisit": 6.7,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 20179.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Neha Prakash Khairnar","leads": 33,"ql": 19,"leadToQL": 57.6,"visit": 2,"qlToVisit": 10.5,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 11321.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Aryan Patil","leads": 5,"ql": 1,"leadToQL": 20.0,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2609.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Ashish lalwani","leads": 17,"ql": 6,"leadToQL": 35.3,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 4203.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0},{"name": "Sahil Priyadarshi","leads": 9,"ql": 4,"leadToQL": 44.4,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2625.0,"revenue": 0.0,"roas": 0.0,"pipeline": 0.0}],"Mar": [{"name": "Rushikesh Bapurao Gurude","leads": 121,"ql": 28,"leadToQL": 23.1,"visit": 2,"qlToVisit": 7.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 70768.0,"revenue": 0.0,"roas": 0.0,"pipeline": 831810.0},{"name": "Pratik Dash","leads": 108,"ql": 38,"leadToQL": 35.2,"visit": 2,"qlToVisit": 5.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 26212.0,"revenue": 0.0,"roas": 0.0,"pipeline": 575458.0},{"name": "Shameez Shahzad Sayed","leads": 86,"ql": 29,"leadToQL": 33.7,"visit": 5,"qlToVisit": 17.2,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 65097.0,"revenue": 0.0,"roas": 0.0,"pipeline": 735523.0},{"name": "Yash Mangesh Nikumbh","leads": 13,"ql": 6,"leadToQL": 46.2,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 2880.0,"revenue": 0.0,"roas": 0.0,"pipeline": 177182.0},{"name": "Kratika Raghuwanshi","leads": 79,"ql": 30,"leadToQL": 38.0,"visit": 6,"qlToVisit": 20.0,"booking": 1,"visitToBooking": 16.7,"qlToBooking": 3.3,"spend": 25862.0,"revenue": 1460000.0,"roas": 56.45,"pipeline": 1105951.0},{"name": "Vaishnavi Gawde","leads": 31,"ql": 13,"leadToQL": 41.9,"visit": 3,"qlToVisit": 23.1,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 6662.0,"revenue": 0.0,"roas": 0.0,"pipeline": 507109.0},{"name": "Neha Prakash Khairnar","leads": 24,"ql": 1,"leadToQL": 4.2,"visit": 0,"qlToVisit": 0.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 10935.0,"revenue": 0.0,"roas": 0.0,"pipeline": 145603.0},{"name": "Divita Manojkumar Meshram","leads": 5,"ql": 4,"leadToQL": 80.0,"visit": 3,"qlToVisit": 75.0,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 0.0,"revenue": 0.0,"roas": 0.0,"pipeline": 210865.0},{"name": "Aryan Patil","leads": 14,"ql": 7,"leadToQL": 50.0,"visit": 1,"qlToVisit": 14.3,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 1920.0,"revenue": 0.0,"roas": 0.0,"pipeline": 271716.0},{"name": "Ashish lalwani","leads": 81,"ql": 16,"leadToQL": 19.8,"visit": 3,"qlToVisit": 18.8,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 32726.0,"revenue": 0.0,"roas": 0.0,"pipeline": 546817.0},{"name": "Sahil Priyadarshi","leads": 57,"ql": 17,"leadToQL": 29.8,"visit": 5,"qlToVisit": 29.4,"booking": 0,"visitToBooking": 0.0,"qlToBooking": 0.0,"spend": 33094.0,"revenue": 0.0,"roas": 0.0,"pipeline": 810843.0}]}};
+const FALLBACK_PROJ = {"Kiran Kumar": {"Jan": [{"project": "Birla Manjari Pune", "leads": 251, "ql": 133, "visits": 14, "spend": 147267.0, "bookings": 0, "revenue": 0.0, "pipeline": 220000.0, "developer": "Birla Estates"}, {"project": "Godrej Upper Kharadi Pune", "leads": 57, "ql": 19, "visits": 3, "spend": 32725.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "Kohinoor Kaleido Kharadi Pune", "leads": 36, "ql": 18, "visits": 1, "spend": 16554.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kohinoor"}, {"project": "Kohinoor Kharadi Pune", "leads": 30, "ql": 11, "visits": 2, "spend": 27358.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kohinoor"}, {"project": "Kumar Parc Magarpatta Pune", "leads": 122, "ql": 34, "visits": 5, "spend": 147524.0, "bookings": 1, "revenue": 275000.0, "pipeline": 0.0, "developer": "Kumar"}, {"project": "Shapoorji Plots Hadapsar Pune", "leads": 291, "ql": 133, "visits": 9, "spend": 91788.0, "bookings": 0, "revenue": 0.0, "pipeline": 223000.0, "developer": "Shapoorji"}], "Feb": [{"project": "Gera Island of Joy Kharadi", "leads": 37, "ql": 19, "visits": 4, "spend": 10388.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Gera"}, {"project": "Godrej Elaris Mundwa Pune", "leads": 13, "ql": 5, "visits": 0, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "Godrej Magarpatta Mundhwa Pune", "leads": 35, "ql": 5, "visits": 1, "spend": 67964.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "Godrej Park Springs Pune", "leads": 172, "ql": 64, "visits": 3, "spend": 172444.0, "bookings": 2, "revenue": 526000.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "Godrej Upper Kharadi Pune", "leads": 96, "ql": 22, "visits": 1, "spend": 102295.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "Kohinoor Kaleido Kharadi Pune", "leads": 40, "ql": 22, "visits": 2, "spend": 21332.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kohinoor"}, {"project": "Kohinoor Kharadi Pune", "leads": 46, "ql": 18, "visits": 2, "spend": 34434.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kohinoor"}, {"project": "Kumar Parc Magarpatta Pune", "leads": 95, "ql": 28, "visits": 8, "spend": 88246.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kumar"}, {"project": "Lodha Camelot Kharadi Pune", "leads": 13, "ql": 6, "visits": 0, "spend": 48023.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Lodha Group"}, {"project": "Purple Codename Real Kharadi Pune", "leads": 7, "ql": 2, "visits": 1, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Purple Corp"}, {"project": "Shapoorji Plots Hadapsar Pune", "leads": 5, "ql": 2, "visits": 2, "spend": 259.0, "bookings": 2, "revenue": 435135.0, "pipeline": 0.0, "developer": "Shapoorji"}, {"project": "VTP Aurelia Kharadi Pune", "leads": 1, "ql": 1, "visits": 0, "spend": 1645.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "VTP"}], "Mar": [{"project": "Gera Island of Joy Kharadi", "leads": 8, "ql": 3, "visits": 1, "spend": 1052.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Gera"}, {"project": "Godrej Park Springs Pune", "leads": 170, "ql": 54, "visits": 3, "spend": 144745.0, "bookings": 0, "revenue": 0.0, "pipeline": 250000.0, "developer": "Godrej Properties"}, {"project": "Godrej Upper Kharadi Pune", "leads": 116, "ql": 33, "visits": 10, "spend": 79418.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "Kumar Parc Magarpatta Pune", "leads": 61, "ql": 25, "visits": 4, "spend": 68543.0, "bookings": 2, "revenue": 6350000.0, "pipeline": 300000.0, "developer": "Kumar"}, {"project": "Purple Codename Real Kharadi Pune", "leads": 9, "ql": 7, "visits": 1, "spend": 36162.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Purple Corp"}, {"project": "VTP Aurelia Kharadi Pune", "leads": 1, "ql": 0, "visits": 0, "spend": 1052.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "VTP"}]}, "Rahul": {"Jan": [{"project": "Birla Estate Pune", "leads": 147, "ql": 87, "visits": 14, "spend": 84566.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Birla Estates"}, {"project": "Bramha Corp Codename Panorama Bavdhan Pune", "leads": 222, "ql": 87, "visits": 17, "spend": 155856.0, "bookings": 5, "revenue": 2043044.0, "pipeline": 0.0, "developer": "Bramha Corp"}, {"project": "Kohinoor Downtown 2 Wakad Pune", "leads": 58, "ql": 36, "visits": 5, "spend": 68002.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kohinoor"}, {"project": "Kolte Patil Codename Xtra Hinjewadi Pune", "leads": 69, "ql": 28, "visits": 6, "spend": 65177.0, "bookings": 1, "revenue": 170737.0, "pipeline": 0.0, "developer": "Kolte Patil"}, {"project": "Krisala & Hiranandani Pune", "leads": 195, "ql": 76, "visits": 13, "spend": 218183.0, "bookings": 1, "revenue": 210000.0, "pipeline": 0.0, "developer": "Krisala"}, {"project": "Lodha New Launch Hinjewadi Pune", "leads": 43, "ql": 14, "visits": 5, "spend": 143820.0, "bookings": 0, "revenue": 248000.0, "pipeline": 0.0, "developer": "Lodha Group"}, {"project": "Mahindra Citadel Pune", "leads": 58, "ql": 29, "visits": 3, "spend": 75121.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Mahindra"}, {"project": "Majestique Codename Prime West Pune", "leads": 92, "ql": 42, "visits": 7, "spend": 75809.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Majestique"}, {"project": "Saheel Luxton Wakad Pune", "leads": 10, "ql": 5, "visits": 0, "spend": 33799.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Saheel"}, {"project": "Saheel Wakad 111 Pune", "leads": 47, "ql": 16, "visits": 2, "spend": 73608.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Saheel"}, {"project": "WYCE Exclucity Bavdhan Pune", "leads": 118, "ql": 34, "visits": 3, "spend": 146180.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "WYCE"}], "Feb": [{"project": "Birla Estate Pune", "leads": 106, "ql": 43, "visits": 4, "spend": 112063.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Birla Estates"}, {"project": "Bramha Corp Codename Panorama Bavdhan Pune", "leads": 108, "ql": 33, "visits": 5, "spend": 61325.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Bramha Corp"}, {"project": "Kohinoor Downtown 2 Wakad Pune", "leads": 136, "ql": 69, "visits": 8, "spend": 131661.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kohinoor"}, {"project": "Kolte Patil Codename Udaan Hinjewadi Pune", "leads": 74, "ql": 26, "visits": 6, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Kolte Patil"}, {"project": "Kolte Patil Codename Xtra Hinjewadi Pune", "leads": 58, "ql": 31, "visits": 6, "spend": 39268.0, "bookings": 1, "revenue": 184250.0, "pipeline": 0.0, "developer": "Kolte Patil"}, {"project": "Krisala & Hiranandani Pune", "leads": 227, "ql": 93, "visits": 10, "spend": 185650.0, "bookings": 2, "revenue": 935951.0, "pipeline": 0.0, "developer": "Krisala"}, {"project": "Lodha New Launch Hinjewadi Pune", "leads": 131, "ql": 24, "visits": 8, "spend": 244726.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Lodha Group"}, {"project": "Mahindra Citadel Pune", "leads": 7, "ql": 3, "visits": 0, "spend": 9117.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Mahindra"}, {"project": "Majestique Aaravli Warje Pune", "leads": 76, "ql": 48, "visits": 11, "spend": 81039.0, "bookings": 1, "revenue": 201271.0, "pipeline": 0.0, "developer": "Majestique"}, {"project": "Majestique Codename Prime West Pune", "leads": 65, "ql": 30, "visits": 3, "spend": 66571.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Majestique"}, {"project": "Saheel Luxton Wakad Pune", "leads": 5, "ql": 3, "visits": 1, "spend": 5746.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Saheel"}, {"project": "Saheel Wakad 111 Pune", "leads": 24, "ql": 9, "visits": 1, "spend": 26102.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Saheel"}], "Mar": [{"project": "Birla Estate Pune", "leads": 95, "ql": 28, "visits": 3, "spend": 71625.0, "bookings": 0, "revenue": 0.0, "pipeline": 560000.0, "developer": "Birla Estates"}, {"project": "Bramha Corp Codename Panorama Bavdhan Pune", "leads": 155, "ql": 51, "visits": 4, "spend": 81077.0, "bookings": 1, "revenue": 766740.0, "pipeline": 1200000.0, "developer": "Bramha Corp"}, {"project": "Kolte Patil Codename Udaan Hinjewadi Pune", "leads": 93, "ql": 14, "visits": 5, "spend": 27400.0, "bookings": 1, "revenue": 357500.0, "pipeline": 350000.0, "developer": "Kolte Patil"}, {"project": "Kolte Patil Codename Xtra Hinjewadi Pune", "leads": 14, "ql": 5, "visits": 2, "spend": 15368.0, "bookings": 0, "revenue": 0.0, "pipeline": 420000.0, "developer": "Kolte Patil"}, {"project": "Krisala & Hiranandani Pune", "leads": 197, "ql": 81, "visits": 15, "spend": 158574.0, "bookings": 1, "revenue": 176750.0, "pipeline": 720000.0, "developer": "Krisala"}]}, "Nikhil": {"Jan": [{"project": "GODREJ EVERGREEN SQUARE", "leads": 97, "ql": 23, "visits": 2, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "GODREJ AQUA RETREAT", "leads": 22, "ql": 9, "visits": 1, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "GODREJ GREEN FRONT", "leads": 121, "ql": 27, "visits": 2, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}], "Feb": [{"project": "GODREJ EVERGREEN SQUARE", "leads": 265, "ql": 89, "visits": 15, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "GODREJ AQUA RETREAT", "leads": 112, "ql": 59, "visits": 12, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}, {"project": "GODREJ GREEN FRONT", "leads": 118, "ql": 28, "visits": 1, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}], "Mar": [{"project": "GODREJ EVERGREEN SQUARE", "leads": 220, "ql": 42, "visits": 30, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 1350000.0, "developer": "Godrej Properties"}, {"project": "GODREJ AQUA RETREAT", "leads": 174, "ql": 71, "visits": 6, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 315000.0, "developer": "Godrej Properties"}, {"project": "GODREJ GREEN FRONT", "leads": 67, "ql": 21, "visits": 0, "spend": 0.0, "bookings": 0, "revenue": 0.0, "pipeline": 0.0, "developer": "Godrej Properties"}]}};
+
+const TL_LIST = ["Rahul", "Nikhil", "Kiran Kumar"];
+const MONTHS = ["Jan", "Feb", "Mar"];
+const TOTAL_MONTHS = ["Jan", "Feb", "Mar", "Apr"];
+const LOGO = "data:image/webp;base64,UklGRigFAABXRUJQVlA4IBwFAADQIgCdASq0ALQAPkkkj0UioiEUKfQIKASEsbdnz6vAZeGabDj8r1qPvvJ69FxmXAnIX+s+3n6Uf031W/if/ae4B/dP6n+pvWP8wH7X/tH7qn+K/x3sI9AD+ff3H1OP9d7FX9e/53sM/sZ6af7X/DH+537He2Q79fsApRH9C4gOMXHkHyFcvnAztYrdpP98qrAP7Bryp6W8AHby2ccDxKQksdSaalCxV56IUhMl45xFrogxJzlWAf2YbME11Qf3eXFH4XxJ3FS3+DWOe/rLeAGPNhvuHAf3DVtZLD8afzpcwoSnapB3qm6wDe10KD+y3Ei3+bomYcwo46GeEEexKLgZN+LaRlPatUMgHfQDfdRA2Rfkwix6g9iUhQ7nwLqQAAD+/5D5j/fDPlLqduWSpxnzPlGDLOmds+vMX1jFrgFn/LTe8KKhYRt3t539tgls3SxTj0HsgJ0nAK/5P+K6L6s4LjYKMw8XCrK4NwvIAVaoHHBv98U9ASyeNbTqf5sLiyqGSb92H4ubn3N8uMVeH5fvs4ygq3Dr32hJccb1rPwnXvww//6Dys7/Nz4VAK1NjVEz5PJHaxDiRgBscN6nMZpS5hn84a535v8puHOCLOnzw74v2uGjv3c3TRjocgIXgSwwbIGpI+AKP0ykgETif5plVLxwcou8AWjARo6C2xFmt0spMHVoUR80/EXz2VfsvzEJJfA+W76Qb8hCvAnq1lnOFnr9Zpl3uBQ2/mTsBMoNfNzF1xsRpfCAVsj0MVUyfhkukUbeetbWs40hAcg9I+ViwCLyC3OveyyY9cNx+dd2wmO33d2P9ONi0yTuybV6FcfA6ADXNvYplf0MPD1L87DJ8nAvh4CEsr53PgtR0SFm7e3yez+LJjN0iff4XOB3UQR5Sv0AvxG7guupsx4bqGskDGC3Wo0s8tOEIg/3HXCSXhhN4rhsmSgLcvZH1YDb+sbdv9JjLQGPZnMDWXeFG4hyoOS7Rr+oA5hi27ccI+v+lwF1x5tgMpnXkoIHZGto9Mp+MkJOja75zf+oI4akuSrTiH0uLaab7viW2jan7boECs76YwSO4yD1017MWLqXVhEc4Ih2FGKxmCfedwnq2zhYK/4n1m25jBbhIo5OYBRBVn6HYPQWjkNAsDbYYE3KwJTsyF784UYn6pY3UcPlE5ZbtTW9u+IhrP+zr0n7DCEYokeHtbqE2zUcXRMdU7jR/dUxDvPgg0gVxiOThYi1MjI/rLSs9PGsgEm3cCeepTQb3D0hWe7DpjOAz7fwFQH4xmq4KTB7wKyS7ZDQ3ysby8suhvHDyP+GTgku/sul7/sLitGcaNHZBfYRsNQkExvTeL0jS+hx2U0acbW2js0ZgM57uNAh9kgRNfEdHH/Z4K3ggdpBkejJG22wwqfgyWJN9rPdBkTg5b/QjgXgv8yIJWK68dkkdA2AG6BeOFMKKBX0t3tCanCTYVA0lObIRYCniCDeVmWwj+ygnA0jrP4H+fnfY70z3qd6sLrCWZRDM6/jhTiYD7tGyDpjrkKU9k1UUZOSNVnbdgxwmFtqDkaPHiLMVvAqiz9XqSefPOLvZl/BC4grFyxm2jQOqlTwpSSnr37ckCM3sX3hMAJWGg1htVO04KbC8oK7fwcNIbcwXhZaJdmfRV55bq1Z8zsMJgN737l9SRZMiMTCy48Z3ZlvitsrXpcX1AluUEAmW5bciDfk3yavTUJAZwKWAOWLMcDUKazDxgABa6yj8AAAAAA=";
+const TL_MAP = { "Rahul Kumar": "Rahul", "Nikhil Mohan Pardeshi": "Nikhil", "Kirankumar Mashette": "Kiran Kumar" };
+const MONTH_MAP = { "January": "Jan", "February": "Feb", "March": "Mar", "April": "Apr" };
+
+const USERS = {
+  "admin": { pass: "Pistol@123", role: "Admin", tl: null },
+  "rahul": { pass: "Rahul@123", role: "TL", tl: "Rahul" },
+  "nikhil": { pass: "Nikhil@123", role: "TL", tl: "Nikhil" },
+  "kiran": { pass: "Kiran@123", role: "TL", tl: "Kiran Kumar" },
+};
+
+// ─── HELPERS ───
+const fmt = (n) => { if (n === undefined || n === null || n === "") return "—"; if (typeof n === "number") return n.toLocaleString("en-IN"); return n; };
+const fmtCur = (n) => { if (!n) return "₹0"; return "₹" + Number(n).toLocaleString("en-IN"); };
+const fmtPct = (n) => { if (!n && n !== 0) return "—"; return n + "%"; };
+const cleanNum = (v) => { if (!v || v === "N/A" || v === "NaN" || v === "#N/A") return 0; const s = String(v).replace(/[₹,%()\s]/g, "").replace(/,/g, ""); const n = parseFloat(s); return isNaN(n) ? 0 : n; };
+
+const S = {
+  bg: "#0c0c0f", card: "#16161a", border: "#2a2a32",
+  accent: "#e8772e", accentDim: "rgba(232,119,46,0.15)", accentGlow: "rgba(232,119,46,0.3)",
+  text: "#e8e8ec", textDim: "#8a8a96", green: "#34d399", red: "#f87171", blue: "#60a5fa",
+};
+const ratioColor = (v) => { const n = parseFloat(v); if (n >= 30) return S.green; if (n >= 15) return "#fbbf24"; return S.red; };
+
+// ─── CSV PARSERS ───
+function parseEmpCSV(csv) {
+  const result = {};
+  const rows = Papa.parse(csv, { header: true, skipEmptyLines: true }).data;
+  rows.forEach(r => {
+    const tl = TL_MAP[r.TL_Name?.trim()] || r.TL_Name?.trim();
+    const m = MONTH_MAP[r.Month?.trim()] || r.Month?.trim();
+    if (!tl || !m || !r.Employee_Name) return;
+    if (!result[tl]) result[tl] = {};
+    if (!result[tl][m]) result[tl][m] = [];
+    const leads = cleanNum(r.Leads), ql = cleanNum(r.QL), visit = cleanNum(r.Visits), booking = cleanNum(r.Bookings);
+    const spend = cleanNum(r.Total_Spend), revenue = cleanNum(r.Revenue), pipeline = cleanNum(r.Pipeline);
+    result[tl][m].push({
+      name: r.Employee_Name.trim(), leads, ql,
+      leadToQL: leads > 0 ? Math.round(ql / leads * 1000) / 10 : 0,
+      visit,
+      qlToVisit: ql > 0 ? Math.round(visit / ql * 1000) / 10 : 0,
+      booking,
+      visitToBooking: visit > 0 ? Math.round(booking / visit * 1000) / 10 : 0,
+      qlToBooking: ql > 0 ? Math.round(booking / ql * 1000) / 10 : 0,
+      spend, revenue,
+      roas: spend > 0 && revenue > 0 ? Math.round(revenue / spend * 100) / 100 : 0,
+      pipeline,
+      salary: cleanNum(r["Salary Cost"] || r[15] || 0),
+      rent: cleanNum(r["Rent"] || r[16] || 0),
+      roi: (() => { const sal = cleanNum(r["Salary Cost"] || r[15] || 0); const ren = cleanNum(r["Rent"] || r[16] || 0); const tot = spend + sal + ren; return tot > 0 && revenue > 0 ? Math.round(revenue / tot * 100) / 100 : 0; })(),
+    });
+  });
+  return result;
+}
+
+function parseProjCSV(csv) {
+  const result = {};
+  const rows = Papa.parse(csv, { header: true, skipEmptyLines: true }).data;
+  rows.forEach(r => {
+    const tl = TL_MAP[r.TL_Name?.trim()] || r.TL_Name?.trim();
+    const m = MONTH_MAP[r.Month?.trim()] || r.Month?.trim();
+    if (!tl || !m || !r.Project_Name) return;
+    if (!result[tl]) result[tl] = {};
+    if (!result[tl][m]) result[tl][m] = [];
+    result[tl][m].push({
+      project: r.Project_Name.trim(), leads: cleanNum(r.Leads), ql: cleanNum(r.QL),
+      visits: cleanNum(r.Visits), spend: cleanNum(r.Total_Spend), bookings: cleanNum(r.Bookings),
+      revenue: cleanNum(r.Revenue), pipeline: cleanNum(r.Pipeline),
+      developer: (r.Developer || "").trim(),
+    });
+  });
+  return result;
+}
+
+// ─── DATA PROVIDER ───
+
+function addRentToEmployees(data) {
+  // Just return data as-is
+  // Rent values come from Google Sheet for BOTH employees and TLs
+  return data;
+}
+
+
+function addTLSalariesToData(data) {
+  const TL_SALARIES = {"Rahul": 161750, "Nikhil": 142977, "Kiran Kumar": 89939};
+  const result = JSON.parse(JSON.stringify(data));
+  Object.keys(result).forEach(tl => {
+    Object.keys(result[tl]).forEach(month => {
+      const tlName = tl === "Kiran Kumar" ? "Kirankumar Mashette (TL)" : tl + " Kumar (TL)";
+      
+      // Get the rent share from first employee in this team (all have same value)
+      const employeeRent = result[tl][month].length > 0 ? (result[tl][month][0].rent || 0) : 0;
+      
+      result[tl][month].unshift({
+        name: tlName, leads: 0, ql: 0, leadToQL: 0, visit: 0, qlToVisit: 0,
+        booking: 0, visitToBooking: 0, qlToBooking: 0, spend: 0, revenue: 0,
+        roas: 0, pipeline: 0, salary: TL_SALARIES[tl], rent: employeeRent, roi: 0
+      });
+    });
+  });
+  return result;
+}
+
+function useSheetData() {
+  const [empData, setEmpData] = useState(addRentToEmployees(addTLSalariesToData(FALLBACK_EMP)));
+  const [projData, setProjData] = useState(FALLBACK_PROJ);
+  const [dataSource, setDataSource] = useState("loading");
+  const [lastSync, setLastSync] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      // Add cache-busting to always fetch fresh data
+      const empUrlWithCache = EMP_CSV_URL + "&v=" + Date.now();
+      const projUrlWithCache = PROJ_CSV_URL + "&v=" + Date.now();
+      
+      const [empRes, projRes] = await Promise.all([fetch(empUrlWithCache), fetch(projUrlWithCache)]);
+      if (empRes.ok && projRes.ok) {
+        const empCSV = await empRes.text();
+        const projCSV = await projRes.text();
+        const emp = addRentToEmployees(addTLSalariesToData(parseEmpCSV(empCSV)));
+        const proj = parseProjCSV(projCSV);
+        
+        if (Object.keys(emp).length > 0) { setEmpData(emp); setProjData(proj); setDataSource("live"); setLastSync(new Date().toLocaleTimeString()); }
+        else setDataSource("fallback");
+      } else setDataSource("fallback");
+    } catch (e) { console.warn("Sheet fetch failed, using fallback:", e); setDataSource("fallback"); }
+  };
+
+  useEffect(() => { fetchData(); const interval = setInterval(fetchData, 300000); return () => clearInterval(interval); }, []);
+
+  return { empData, projData, dataSource, lastSync, refresh: fetchData };
+}
+
+// ─── COMPONENTS ───
+function CellModal({ data, onClose }) {
+  if (!data) return null;
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(6px)" }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: S.card, border: "1px solid " + S.border, borderRadius: 16, padding: 28, minWidth: 340, maxWidth: 500, boxShadow: "0 0 60px " + S.accentGlow }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <div style={{ fontSize: 18, fontWeight: 700, color: S.accent }}>{data.title}</div>
+          <button onClick={onClose} style={{ background: "none", border: "none", color: S.textDim, fontSize: 22, cursor: "pointer" }}>✕</button>
+        </div>
+        {Object.entries(data.details).map(([k, v]) => (
+          <div key={k} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid " + S.border, padding: "6px 0", color: S.text, fontSize: 14 }}>
+            <span style={{ color: S.textDim }}>{k}</span>
+            <span style={{ fontWeight: 600, fontFamily: "'Space Grotesk',monospace" }}>{v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MetricCard({ label, value, color, onClick }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <div onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{
+      background: S.card, border: "1px solid " + (hov ? color || S.accent : S.border), borderRadius: 12, padding: "18px 20px",
+      flex: "1 1 180px", minWidth: 155, position: "relative", overflow: "hidden",
+      cursor: onClick ? "pointer" : "default", transition: "all 0.2s", transform: hov && onClick ? "translateY(-2px)" : "none",
+    }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: color || S.accent }} />
+      <div style={{ fontSize: 11, color: S.textDim, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 6 }}>{label}</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: S.text, fontFamily: "'Space Grotesk',monospace" }}>{value}</div>
+    </div>
+  );
+}
+
+function SortBtn({ field, sortField, sortDir }) {
+  const active = sortField === field;
+  return <span style={{ marginLeft: 4, opacity: active ? 1 : 0.3, fontSize: 10 }}>{active && sortDir === "desc" ? "▼" : "▲"}</span>;
+}
+
+function ClickCell({ children, onClick, style }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <td onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ padding: "10px 12px", borderBottom: "1px solid " + S.border, cursor: "pointer", transition: "all 0.15s",
+        background: hov ? S.accentDim : "transparent", fontFamily: "'Space Grotesk',monospace", fontSize: 13, ...style }}>
+      {children}
+    </td>
+  );
+}
+
+// ─── MAIN DASHBOARD ───
+function Dashboard() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [pw, setPw] = useState("");
+  const [pwErr, setPwErr] = useState(false);
+  const [showPw, setShowPw] = useState(false);
+  const [loginUser, setLoginUser] = useState("");
+  const [role, setRole] = useState("Admin");
+  const [selectedTL, setSelectedTL] = useState("Rahul");
+  const [selectedEmp, setSelectedEmp] = useState("");
+  const [month, setMonth] = useState("Jan");
+  const [tab, setTab] = useState("overview");
+  const [modal, setModal] = useState(null);
+  const [sortFields, setSortFields] = useState({});
+  const [pipelineRoas, setPipelineRoas] = useState(false);
+
+  const { empData: EMPLOYEES_DATA, projData: PROJECTS_DATA, dataSource, lastSync, refresh } = useSheetData();
+
+  const handleLogin = () => {
+    const user = Object.values(USERS).find(u => u.pass === pw);
+    if (user) { setLoggedIn(true); setPwErr(false); if (user.role === "TL") { setRole("TL"); setSelectedTL(user.tl); } setLoginUser(user.role === "TL" ? user.tl : "Admin"); }
+    else { setPwErr(true); setTimeout(() => setPwErr(false), 1500); }
+  };
+
+  function getJFM(tl) {
+    const nameMap = {};
+    MONTHS.forEach(m => (EMPLOYEES_DATA[tl]?.[m] || []).forEach(e => {
+      if (!nameMap[e.name]) nameMap[e.name] = { name: e.name, leads: 0, ql: 0, visit: 0, booking: 0, spend: 0, revenue: 0, pipeline: 0, salary: 0, rent: 0 };
+      const o = nameMap[e.name]; o.leads += e.leads; o.ql += e.ql; o.visit += e.visit; o.booking += e.booking; o.spend += e.spend; o.revenue += e.revenue; o.pipeline += e.pipeline; o.salary += e.salary||0; o.rent += e.rent||0;
+    }));
+    return Object.values(nameMap).map(o => ({
+      ...o, leadToQL: o.leads > 0 ? Math.round(o.ql / o.leads * 1000) / 10 : 0,
+      qlToVisit: o.ql > 0 ? Math.round(o.visit / o.ql * 1000) / 10 : 0,
+      visitToBooking: o.visit > 0 ? Math.round(o.booking / o.visit * 1000) / 10 : 0,
+      qlToBooking: o.ql > 0 ? Math.round(o.booking / o.ql * 1000) / 10 : 0,
+      roas: o.spend > 0 && o.revenue > 0 ? Math.round(o.revenue / o.spend * 100) / 100 : 0,
+      roi: (o.spend + o.salary + o.rent) > 0 && o.revenue > 0 ? Math.round(o.revenue / (o.spend + o.salary + o.rent) * 100) / 100 : 0,
+    }));
+  }
+  function getTotal(tl) {
+    const nameMap = {};
+    TOTAL_MONTHS.forEach(m => (EMPLOYEES_DATA[tl]?.[m] || []).forEach(e => {
+      if (!nameMap[e.name]) nameMap[e.name] = { name: e.name, leads: 0, ql: 0, visit: 0, booking: 0, spend: 0, revenue: 0, pipeline: 0, salary: 0, rent: 0 };
+      const o = nameMap[e.name]; o.leads += e.leads; o.ql += e.ql; o.visit += e.visit; o.booking += e.booking; o.spend += e.spend; o.revenue += e.revenue; o.pipeline += e.pipeline; o.salary += e.salary||0; o.rent += e.rent||0;
+    }));
+    return Object.values(nameMap).map(o => ({
+      ...o, leadToQL: o.leads > 0 ? Math.round(o.ql / o.leads * 1000) / 10 : 0,
+      qlToVisit: o.ql > 0 ? Math.round(o.visit / o.ql * 1000) / 10 : 0,
+      visitToBooking: o.visit > 0 ? Math.round(o.booking / o.visit * 1000) / 10 : 0,
+      qlToBooking: o.ql > 0 ? Math.round(o.booking / o.ql * 1000) / 10 : 0,
+      roas: o.spend > 0 && o.revenue > 0 ? Math.round(o.revenue / o.spend * 100) / 100 : 0,
+      roi: (o.spend + o.salary + o.rent) > 0 && o.revenue > 0 ? Math.round(o.revenue / (o.spend + o.salary + o.rent) * 100) / 100 : 0,
+    }));
+  }
+
+  const getEmps = (tl, m) => m === "JFM" ? getJFM(tl) : m === "Total" ? getTotal(tl) : (EMPLOYEES_DATA[tl]?.[m] || []);
+
+  const openCellModal = (title, details) => setModal({ title, details });
+  const doSort = (table, field) => setSortFields(prev => { const cur = prev[table]; return { ...prev, [table]: { field, dir: cur?.field === field && cur?.dir === "asc" ? "desc" : cur?.field === field ? "asc" : "desc" } }; });
+  const getSorted = (table, data) => { const s = sortFields[table]; if (!s) return data; return [...data].sort((a, b) => { let va = a[s.field], vb = b[s.field]; if (typeof va === "string") { va = va.toLowerCase(); vb = (vb||"").toLowerCase(); } return s.dir === "asc" ? (va < vb ? -1 : va > vb ? 1 : 0) : (va > vb ? -1 : va < vb ? 1 : 0); }); };
+  const sf = (table) => sortFields[table] || {};
+
+  const visibleTLs = role === "Admin" ? TL_LIST : [selectedTL];
+  const monthLabel = month === "JFM" ? "Jan–Mar 2026 (Combined)" : month === "Total" ? "Jan–Apr 2026 (Total)" : month + " 2026";
+
+  const stats = useMemo(() => {
+    let tL=0,tQ=0,tB=0,tR=0,tP=0,tS=0,tV=0;
+    visibleTLs.forEach(tl => getEmps(tl, month).forEach(e => { tL+=e.leads; tQ+=e.ql; tB+=e.booking; tR+=e.revenue; tP+=e.pipeline; tS+=e.spend; tV+=e.visit; }));
+    return { leads: tL, ql: tQ, bookings: tB, revenue: tR, pipeline: tP, spend: tS, visits: tV };
+  }, [role, selectedTL, month, EMPLOYEES_DATA]);
+
+  const allEmpNames = useMemo(() => {
+    const s = new Set(); Object.values(EMPLOYEES_DATA[selectedTL] || {}).forEach(arr => arr.forEach(e => s.add(e.name))); return [...s].sort();
+  }, [selectedTL, EMPLOYEES_DATA]);
+
+  // ─── LOGIN SCREEN ───
+  if (!loggedIn) return (
+    <div style={{ minHeight: "100vh", background: S.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans',sans-serif" }}>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <div style={{ background: S.card, border: "1px solid " + S.border, borderRadius: 20, padding: "48px 40px", width: 380, textAlign: "center", boxShadow: "0 0 80px rgba(232,119,46,0.08)" }}>
+        <img src={LOGO} alt="Logo" style={{ height: 64, width: 64, objectFit: "contain", borderRadius: 12, background: "#fff", padding: 4, marginBottom: 20 }} />
+        <div style={{ fontSize: 22, fontWeight: 700, color: S.text, marginBottom: 4 }}>Pune Operations</div>
+        <div style={{ fontSize: 13, color: S.accent, letterSpacing: 1, marginBottom: 28, fontWeight: 600 }}>DASHBOARD LOGIN</div>
+        <div style={{ position: "relative", marginBottom: 16 }}>
+          <input type={showPw ? "text" : "password"} value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()} placeholder="Enter your password"
+            style={{ width: "100%", padding: "14px 44px 14px 16px", borderRadius: 10, border: "1px solid " + (pwErr ? S.red : S.border), background: S.bg, color: S.text, fontSize: 15, outline: "none", boxSizing: "border-box" }} />
+          <span onClick={() => setShowPw(!showPw)} style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", cursor: "pointer", fontSize: 18, color: S.textDim }}>{showPw ? "🙈" : "👁️"}</span>
+        </div>
+        {pwErr && <div style={{ color: S.red, fontSize: 13, marginBottom: 12 }}>Incorrect password</div>}
+        <button onClick={handleLogin} style={{ width: "100%", padding: "14px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, " + S.accent + ", #d4621a)", color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Unlock Dashboard</button>
+        <div style={{ marginTop: 20, fontSize: 11, color: S.textDim }}>Authorized personnel only</div>
+      </div>
+    </div>
+  );
+
+  const selectStyle = { padding: "8px 14px", borderRadius: 8, border: "1px solid " + S.border, background: S.card, color: S.text, fontSize: 13, cursor: "pointer", outline: "none" };
+  const thS = () => ({ padding: "12px 12px", borderBottom: "2px solid " + S.accent, textAlign: "left", fontSize: 10, textTransform: "uppercase", letterSpacing: 1, color: S.accent, fontWeight: 700, position: "sticky", top: 0, background: S.card, whiteSpace: "nowrap", cursor: "pointer" });
+  const TH = ({ label, field, table }) => ( <th style={thS()} onClick={() => field && doSort(table, field)}>{label} {field && <SortBtn field={field} sortField={sf(table).field} sortDir={sf(table).dir} />}</th> );
+  const tabBtn = (id, label) => ( <button key={id} onClick={() => setTab(id)} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid " + (tab === id ? S.accent : S.border), background: tab === id ? S.accentDim : "transparent", color: tab === id ? S.accent : S.textDim, cursor: "pointer", fontSize: 13, fontWeight: 600, transition: "all 0.2s" }}>{label}</button> );
+  const rankBadge = (i) => { const l = ["🥇","🥈","🥉"]; return i < 3 ? <span style={{fontSize:18}}>{l[i]}</span> : <span style={{color:S.textDim,fontSize:12}}>#{i+1}</span>; };
+
+  return (
+    <div style={{ minHeight: "100vh", background: S.bg, color: S.text, fontFamily: "'DM Sans',sans-serif" }}>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+      {/* HEADER */}
+      <div style={{ background: "linear-gradient(135deg, " + S.card + " 0%, #1a1218 100%)", borderBottom: "1px solid " + S.border, padding: "14px 24px", display: "flex", alignItems: "center", gap: 14, position: "sticky", top: 0, zIndex: 100, flexWrap: "wrap" }}>
+        <img src={LOGO} alt="Logo" style={{ height: 42, width: 42, objectFit: "contain", borderRadius: 8, background: "#fff", padding: 3 }} />
+        <div style={{ flex: 1, minWidth: 200 }}>
+          <div style={{ fontSize: 18, fontWeight: 700 }}>Pune Operations <span style={{ color: S.accent }}>Dashboard</span></div>
+          <div style={{ fontSize: 10, color: S.textDim, letterSpacing: 1, display: "flex", gap: 8, alignItems: "center" }}>
+            PERFORMANCE TRACKER · JAN–MAR 2026
+            <span style={{ background: dataSource === "live" ? S.green : "#fbbf24", width: 6, height: 6, borderRadius: "50%", display: "inline-block" }}></span>
+            <span style={{ fontSize: 9, color: dataSource === "live" ? S.green : "#fbbf24" }}>{dataSource === "live" ? "LIVE" : dataSource === "loading" ? "SYNCING..." : "OFFLINE"}</span>
+            {lastSync && <span style={{ fontSize: 9, color: S.textDim }}>Synced: {lastSync}</span>}
+            {dataSource === "live" && <span onClick={refresh} style={{ fontSize: 9, color: S.accent, cursor: "pointer", textDecoration: "underline" }}>↻ Refresh</span>}
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: S.text, cursor: "pointer" }}>
+            <input type="checkbox" checked={pipelineRoas} onChange={(e) => setPipelineRoas(e.target.checked)} style={{ width: 18, height: 18, accentColor: S.accent, cursor: "pointer" }} />
+            <span>Pipeline ROAS</span>
+          </label>
+          {loginUser === "Admin" ? (
+            <select value={role} onChange={e => { setRole(e.target.value); setSelectedEmp(""); }} style={{ ...selectStyle, borderColor: S.accent }}>
+              <option value="Admin">👑 Admin</option><option value="TL">📋 TL</option><option value="Employee">👤 Employee</option>
+            </select>
+          ) : (
+            <div style={{ padding: "8px 14px", borderRadius: 8, border: "1px solid " + S.accent, background: S.accentDim, color: S.accent, fontSize: 13, fontWeight: 600 }}>📋 TL: {loginUser}</div>
+          )}
+          {role !== "Admin" && loginUser === "Admin" && <select value={selectedTL} onChange={e => { setSelectedTL(e.target.value); setSelectedEmp(""); }} style={selectStyle}>
+            {TL_LIST.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>}
+          {role === "Employee" && <select value={selectedEmp} onChange={e => setSelectedEmp(e.target.value)} style={selectStyle}>
+            <option value="">All</option>{allEmpNames.map(n => <option key={n} value={n}>{n}</option>)}
+          </select>}
+          <select value={month} onChange={e => setMonth(e.target.value)} style={selectStyle}>
+            <option value="Jan">Jan 2026</option><option value="Feb">Feb 2026</option><option value="Mar">Mar 2026</option><option value="Apr">Apr 2026</option><option value="JFM">JFM Combined</option><option value="Total">Total 2026</option>
+          </select>
+        </div>
+      </div>
+
+      <div style={{ padding: "18px 24px", maxWidth: 1440, margin: "0 auto" }}>
+        <div style={{ display: "flex", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
+          {tabBtn("overview","Overview")}
+          {role !== "Employee" && tabBtn("projects","Projects")}
+          {tabBtn("employees","Employees")}
+          {role === "Admin" && tabBtn("developers","Developers / Marketing")}
+          {role === "Admin" && tabBtn("tl_compare","TL Comparison")}
+          {tabBtn("top_performers","Top Performers")}
+        </div>
+
+        {/* ══ OVERVIEW ══ */}
+        {tab === "overview" && (<>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 24 }}>
+            <MetricCard label="Total Leads" value={fmt(stats.leads)} color={S.accent} onClick={() => { const d = {}; visibleTLs.forEach(tl => d[tl] = fmt(getEmps(tl,month).reduce((a,e)=>a+e.leads,0))); openCellModal("Leads — " + monthLabel, d); }} />
+            <MetricCard label="Qualified Leads" value={fmt(stats.ql)} color={S.blue} />
+            <MetricCard label="Visits" value={fmt(stats.visits)} color="#a78bfa" />
+            <MetricCard label="Bookings" value={fmt(stats.bookings)} color={S.green} />
+            <MetricCard label="Revenue" value={fmtCur(stats.revenue)} color={S.green} />
+            <MetricCard label="Pipeline" value={fmtCur(stats.pipeline)} color="#a78bfa" />
+            <MetricCard label="Total Spend" value={fmtCur(stats.spend)} color={S.red} />
+          </div>
+          {role === "Admin" && (
+            <div style={{ background: S.card, borderRadius: 12, border: "1px solid " + S.border, overflow: "hidden", marginBottom: 20 }}>
+              <div style={{ padding: "14px 18px", borderBottom: "1px solid " + S.border, fontSize: 15, fontWeight: 700 }}>Team Leaders — <span style={{color:S.accent}}>{monthLabel}</span></div>
+              <div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
+                {[["TL","name"],["Team","_team"],["Leads","leads"],["QL","ql"],["L→QL%","_lql"],["Visits","visit"],["Bookings","booking"],["Revenue","revenue"],["ROAS","_roas"],["Pipeline","pipeline"],["Spend","spend"],["Salary","_salary"],["Rent","_rent"],["ROI","_roi"]].map(([l,f])=><TH key={f} label={l} field={f} table="tlOver" />)}
+              </tr></thead><tbody>
+                {getSorted("tlOver", TL_LIST.map(tl => {
+                  const e = getEmps(tl,month); const l = e.reduce((a,x)=>a+x.leads,0); const q = e.reduce((a,x)=>a+x.ql,0); const r = e.reduce((a,x)=>a+x.revenue,0); const s = e.reduce((a,x)=>a+x.spend,0); const sal = e.reduce((a,x)=>a+(x.salary||0),0); const rent = e.reduce((a,x)=>a+(x.rent||0),0); const total = s+sal+rent; const roi = total>0&&r>0?Math.round(r/total*100)/100:0;
+                  return { name: tl, _team: e.length, leads: l, ql: q, _lql: l>0?Math.round(q/l*1000)/10:0, visit: e.reduce((a,x)=>a+x.visit,0), booking: e.reduce((a,x)=>a+x.booking,0), revenue: r, _roas: s>0&&r>0?Math.round(r/s*100)/100:0, pipeline: e.reduce((a,x)=>a+x.pipeline,0), spend: s, _salary: sal, _rent: rent, _roi: roi };
+                })).map(t => <tr key={t.name}>
+                  <ClickCell onClick={()=>openCellModal(t.name,{Leads:fmt(t.leads),QL:fmt(t.ql),Revenue:fmtCur(t.revenue),Salary:fmtCur(t._salary),Rent:fmtCur(t._rent),ROI:t._roi>0?t._roi+"x":"—"})} style={{color:S.accent,fontWeight:700}}>{t.name}</ClickCell>
+                  <ClickCell style={{textAlign:"center"}}>{t._team}</ClickCell>
+                  <ClickCell>{fmt(t.leads)}</ClickCell>
+                  <ClickCell style={{color:S.blue}}>{fmt(t.ql)}</ClickCell>
+                  <ClickCell style={{color:ratioColor(t._lql)}}>{fmtPct(t._lql)}</ClickCell>
+                  <ClickCell>{fmt(t.visit)}</ClickCell>
+                  <ClickCell style={{color:S.green}}>{fmt(t.booking)}</ClickCell>
+                  <ClickCell style={{color:S.green}}>{fmtCur(t.revenue)}</ClickCell>
+                  <ClickCell style={{color:t._roas>0?S.green:S.textDim,fontWeight:700}}>{t._roas>0?t._roas+"x":"—"}</ClickCell>
+                  <ClickCell style={{color:"#a78bfa"}}>{fmtCur(t.pipeline)}</ClickCell>
+                  <ClickCell style={{color:S.red}}>{fmtCur(t.spend)}</ClickCell>
+                  <ClickCell style={{color:"#fbbf24"}}>{fmtCur(t._salary)}</ClickCell>
+                  <ClickCell style={{color:"#fbbf24"}}>{fmtCur(t._rent)}</ClickCell>
+                  <ClickCell style={{color:t._roi>0?S.green:S.textDim,fontWeight:t._roi>0?700:400}}>{t._roi>0?t._roi+"x":"—"}</ClickCell>
+                </tr>)}
+              </tbody></table></div>
+            </div>
+          )}
+          <div style={{ background: S.card, borderRadius: 12, border: "1px solid " + S.border, padding: 20 }}>
+            <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 16 }}>Monthly Leads Trend</div>
+            <div style={{ display: "flex", gap: 24, alignItems: "flex-end", height: 180 }}>
+              {MONTHS.map(m => {
+                let total = 0; const perTL = {};
+                visibleTLs.forEach(tl => { let t=0; (EMPLOYEES_DATA[tl]?.[m]||[]).forEach(e => t+=e.leads); total+=t; perTL[tl]=fmt(t); });
+                const allT = MONTHS.map(mm => { let t=0; visibleTLs.forEach(tl => (EMPLOYEES_DATA[tl]?.[mm]||[]).forEach(e => t+=e.leads)); return t; });
+                const h = (total / Math.max(...allT, 1)) * 160;
+                return (<div key={m} onClick={()=>openCellModal(m+" Leads",{...perTL,Total:fmt(total)})} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:6,cursor:"pointer"}}>
+                  <div style={{fontSize:13,fontWeight:700,fontFamily:"'Space Grotesk',monospace"}}>{fmt(total)}</div>
+                  <div style={{width:"100%",maxWidth:80,height:h,borderRadius:"8px 8px 0 0",background:m===month?"linear-gradient(180deg,"+S.accent+",rgba(232,119,46,0.4))":"linear-gradient(180deg,"+S.border+",rgba(42,42,50,0.4))",transition:"all 0.3s",boxShadow:m===month?"0 0 20px "+S.accentGlow:"none"}} />
+                  <div style={{fontSize:12,color:m===month?S.accent:S.textDim,fontWeight:600}}>{m}</div>
+                </div>);
+              })}
+            </div>
+          </div>
+        </>)}
+
+        {/* ══ PROJECTS ══ */}
+        {tab === "projects" && role !== "Employee" && (<div>
+          {visibleTLs.map(tl => {
+            let projs = month === "JFM" ? (() => { const pM={}; MONTHS.forEach(m=>(PROJECTS_DATA[tl]?.[m]||[]).forEach(p=>{ if(!pM[p.project])pM[p.project]={developer:p.developer,project:p.project,leads:0,ql:0,visits:0,spend:0,bookings:0,revenue:0,pipeline:0}; const o=pM[p.project];o.leads+=p.leads;o.ql+=p.ql;o.visits+=p.visits;o.spend+=p.spend;o.bookings+=p.bookings;o.revenue+=p.revenue;o.pipeline+=p.pipeline; })); return Object.values(pM); })() : month === "Total" ? (() => { const pM={}; TOTAL_MONTHS.forEach(m=>(PROJECTS_DATA[tl]?.[m]||[]).forEach(p=>{ if(!pM[p.project])pM[p.project]={developer:p.developer,project:p.project,leads:0,ql:0,visits:0,spend:0,bookings:0,revenue:0,pipeline:0}; const o=pM[p.project];o.leads+=p.leads;o.ql+=p.ql;o.visits+=p.visits;o.spend+=p.spend;o.bookings+=p.bookings;o.revenue+=p.revenue;o.pipeline+=p.pipeline; })); return Object.values(pM); })() : (PROJECTS_DATA[tl]?.[month] || []);
+            if (!projs.length) return null;
+            return (<div key={tl} style={{background:S.card,borderRadius:12,border:"1px solid "+S.border,overflow:"hidden",marginBottom:20}}>
+              <div style={{padding:"14px 18px",borderBottom:"1px solid "+S.border,fontSize:15,fontWeight:700}}>{tl}'s Projects — <span style={{color:S.accent}}>{monthLabel}</span></div>
+              <div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
+                {[["Developer","developer"],["Project","project"],["Leads","leads"],["QL","ql"],["Visits","visits"],["Spend","spend"],["Bookings","bookings"],["Revenue","revenue"],["Pipeline","pipeline"],["ROAS","_roas"]].map(([l,f])=><TH key={f} label={l} field={f} table={"proj_"+tl} />)}
+              </tr></thead><tbody>
+                {getSorted("proj_"+tl, projs).map((p,i)=><tr key={i}>
+                  <ClickCell style={{color:"#fbbf24",fontWeight:600}}>{p.developer||"—"}</ClickCell>
+                  <ClickCell onClick={()=>openCellModal(p.project,{Developer:p.developer,TL:tl,Revenue:fmtCur(p.revenue),Pipeline:fmtCur(p.pipeline)})} style={{color:S.text,fontWeight:600,maxWidth:240}}>{p.project}</ClickCell>
+                  <ClickCell>{fmt(p.leads)}</ClickCell>
+                  <ClickCell style={{color:S.blue}}>{fmt(p.ql)}</ClickCell>
+                  <ClickCell>{fmt(p.visits)}</ClickCell>
+                  <ClickCell style={{color:S.red}}>{fmtCur(p.spend)}</ClickCell>
+                  <ClickCell style={{color:S.green}}>{fmt(p.bookings)}</ClickCell>
+                  <ClickCell style={{color:S.green}}>{fmtCur(p.revenue)}</ClickCell>
+                  <ClickCell style={{color:"#a78bfa"}}>{fmtCur(p.pipeline)}</ClickCell>
+                  <ClickCell style={{color:S.green,fontWeight:700}}>{(() => { if (p.spend <= 0) return "—"; const val = pipelineRoas ? (p.revenue + p.pipeline) : p.revenue; return val > 0 ? Math.round(val / p.spend * 100) / 100 + "x" : "—"; })()}</ClickCell>
+                </tr>)}
+                <tr style={{background:S.accentDim}}>
+                  <td style={{padding:"12px",borderBottom:"none",fontWeight:700,color:"#fbbf24"}}>TOTAL</td>
+                  <td style={{padding:"12px",borderBottom:"none"}}></td>
+                  <td style={{padding:"12px",fontWeight:700,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmt(projs.reduce((a,p)=>a+p.leads,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.blue,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmt(projs.reduce((a,p)=>a+p.ql,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmt(projs.reduce((a,p)=>a+p.visits,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.red,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(projs.reduce((a,p)=>a+p.spend,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.green,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmt(projs.reduce((a,p)=>a+p.bookings,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.green,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(projs.reduce((a,p)=>a+p.revenue,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:"#a78bfa",borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(projs.reduce((a,p)=>a+p.pipeline,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.green,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{(() => { const r = projs.reduce((a,p)=>a+p.revenue,0); const pl = projs.reduce((a,p)=>a+p.pipeline,0); const s = projs.reduce((a,p)=>a+p.spend,0); if (s <= 0) return "—"; const val = pipelineRoas ? (r + pl) : r; return val > 0 ? Math.round(val / s * 100) / 100 + "x" : "—"; })()}</td>
+                </tr>
+              </tbody></table></div>
+            </div>);
+          })}
+        </div>)}
+
+        {/* ══ EMPLOYEES ══ */}
+        {tab === "employees" && (<div>
+          {visibleTLs.map(tl => {
+            let emps = getEmps(tl, month);
+            if (role === "Employee" && selectedEmp) emps = emps.filter(e => e.name === selectedEmp);
+            if (!emps.length) return null;
+            const tbl = "emp_" + tl;
+            return (<div key={tl} style={{background:S.card,borderRadius:12,border:"1px solid "+S.border,overflow:"hidden",marginBottom:20}}>
+              <div style={{padding:"14px 18px",borderBottom:"1px solid "+S.border,fontSize:15,fontWeight:700}}>{tl}'s Team — <span style={{color:S.accent}}>{monthLabel}</span> <span style={{fontSize:12,color:S.textDim,marginLeft:8}}>({emps.length})</span></div>
+              <div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
+                {[["#",null],["Employee","name"],["Leads","leads"],["QL","ql"],["L→QL%","leadToQL"],["Visits","visit"],["Bookings","booking"],["Spend","spend"],["Salary","salary"],["Rent","rent"],["Revenue","revenue"],["ROAS","roas"],["Pipeline","pipeline"],["ROI","roi"]].map(([l,f])=><TH key={l} label={l} field={f} table={tbl} />)}
+              </tr></thead><tbody>
+                {getSorted(tbl, emps).map((e,i)=><tr key={e.name} style={{background:e.revenue>0?"rgba(52,211,153,0.05)":"transparent"}}>
+                  <td style={{padding:"10px 12px",borderBottom:"1px solid "+S.border,color:S.textDim,fontSize:12}}>{i+1}</td>
+                  <ClickCell onClick={()=>openCellModal(e.name,{TL:tl,Leads:fmt(e.leads),QL:fmt(e.ql),"L→QL":fmtPct(e.leadToQL),Revenue:fmtCur(e.revenue)})} style={{color:S.text,fontWeight:600,whiteSpace:"nowrap"}}>{e.name}</ClickCell>
+                  <ClickCell>{fmt(e.leads)}</ClickCell>
+                  <ClickCell style={{color:S.blue}}>{fmt(e.ql)}</ClickCell>
+                  <ClickCell style={{color:ratioColor(e.leadToQL),fontWeight:700}}>{fmtPct(e.leadToQL)}</ClickCell>
+                  <ClickCell>{fmt(e.visit)}</ClickCell>
+                  <ClickCell style={{color:S.green}}>{fmt(e.booking)}</ClickCell>
+                  <ClickCell style={{color:S.red}}>{fmtCur(e.spend)}</ClickCell>
+                  <ClickCell style={{color:"#fbbf24"}}>{fmtCur(e.salary||0)}</ClickCell>
+                  <ClickCell style={{color:"#fbbf24"}}>{fmtCur(e.rent||0)}</ClickCell>
+                  <ClickCell style={{color:e.revenue>0?S.green:S.textDim,fontWeight:e.revenue>0?700:400}}>{fmtCur(e.revenue)}</ClickCell>
+                  <ClickCell style={{color:S.green,fontWeight:700}}>{(() => { if (e.spend <= 0) return "—"; const val = pipelineRoas ? (e.revenue + e.pipeline) : e.revenue; return val > 0 ? Math.round(val / e.spend * 100) / 100 + "x" : "—"; })()}</ClickCell>
+                  <ClickCell style={{color:e.pipeline>0?"#a78bfa":S.textDim}}>{fmtCur(e.pipeline)}</ClickCell>
+                  <ClickCell style={{color:e.roi>0?S.green:S.textDim,fontWeight:e.roi>0?700:400}}>{e.roi>0?e.roi+"x":"—"}</ClickCell>
+                </tr>)}
+                <tr style={{background:S.accentDim}}>
+                  <td style={{padding:"12px",borderBottom:"none"}}></td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.accent,borderBottom:"none"}}>TOTAL</td>
+                  <td style={{padding:"12px",fontWeight:700,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmt(emps.reduce((a,e)=>a+e.leads,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.blue,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmt(emps.reduce((a,e)=>a+e.ql,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.accent,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{(()=>{const l=emps.reduce((a,e)=>a+e.leads,0),q=emps.reduce((a,e)=>a+e.ql,0);return l>0?fmtPct(Math.round(q/l*1000)/10):"—";})()}</td>
+                  <td style={{padding:"12px",fontWeight:700,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmt(emps.reduce((a,e)=>a+e.visit,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.red,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(emps.reduce((a,e)=>a+e.spend,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:"#fbbf24",borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(emps.reduce((a,e)=>a+(e.salary||0),0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:"#fbbf24",borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(emps.reduce((a,e)=>a+(e.rent||0),0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.green,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(emps.reduce((a,e)=>a+e.revenue,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.green,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{(() => { const r = emps.reduce((a,e)=>a+e.revenue,0); const p = emps.reduce((a,e)=>a+e.pipeline,0); const s = emps.reduce((a,e)=>a+e.spend,0); if (s <= 0) return "—"; const val = pipelineRoas ? (r + p) : r; return val > 0 ? Math.round(val / s * 100) / 100 + "x" : "—"; })()}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:"#a78bfa",borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{fmtCur(emps.reduce((a,e)=>a+e.pipeline,0))}</td>
+                  <td style={{padding:"12px",fontWeight:700,color:S.green,borderBottom:"none",fontFamily:"'Space Grotesk',monospace",fontSize:13}}>{(()=>{const r=emps.reduce((a,e)=>a+e.revenue,0),s=emps.reduce((a,e)=>a+e.spend,0),sal=emps.reduce((a,e)=>a+(e.salary||0),0),rent=emps.reduce((a,e)=>a+(e.rent||0),0);const total=s+sal+rent;return total>0&&r>0?Math.round(r/total*100)/100+"x":"—";})()}</td>
+                </tr>
+              </tbody></table></div>
+            </div>);
+          })}
+        </div>)}
+
+        {/* ══ DEVELOPERS / MARKETING ══ */}
+        {tab === "developers" && role === "Admin" && (<div>
+          <div style={{background:S.card,borderRadius:12,border:"1px solid "+S.border,overflow:"hidden"}}>
+            <div style={{padding:"14px 18px",borderBottom:"1px solid "+S.border,fontSize:15,fontWeight:700}}>Developer Revenue & Marketing Spend — <span style={{color:S.accent}}>{monthLabel}</span></div>
+            <div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
+              {[["Developer","developer"],["Projects","_projects"],["Leads","leads"],["QL","ql"],["Bookings","bookings"],["Revenue","revenue"],["Pipeline","pipeline"],["Spend","spend"],["ROAS","_roi"]].map(([l,f])=><TH key={f} label={l} field={f} table="devMkt" />)}
+            </tr></thead><tbody>
+              {(()=>{
+                const devMap = {}; const ms = month === "JFM" ? MONTHS : month === "Total" ? TOTAL_MONTHS : [month];
+                TL_LIST.forEach(tl => {
+                  ms.forEach(m => (PROJECTS_DATA[tl]?.[m]||[]).forEach(p => {
+                    const dev = p.developer || "Unknown";
+                    if(!devMap[dev]) devMap[dev] = {developer:dev,_projects:0,_projList:[],leads:0,ql:0,bookings:0,revenue:0,pipeline:0,spend:0};
+                    const o = devMap[dev];
+                    if(!o._projList.includes(p.project)){o._projList.push(p.project);o._projects++;}
+                    o.leads+=p.leads;o.ql+=p.ql;o.bookings+=p.bookings;o.revenue+=p.revenue;o.pipeline+=p.pipeline;o.spend+=p.spend;
+                  }));
+                });
+                const rows = Object.values(devMap).map(d=>({...d,_roi:d.spend>0&&d.revenue>0?Math.round(d.revenue/d.spend*100)/100:0}));
+                return getSorted("devMkt",rows).map((d,i)=><tr key={i} style={{background:d.revenue>0?"rgba(52,211,153,0.04)":"transparent"}}>
+                  <ClickCell onClick={()=>openCellModal(d.developer,Object.fromEntries(d._projList.map((p,j)=>["Project "+(j+1),p])))} style={{color:"#fbbf24",fontWeight:700,fontSize:14}}>{d.developer}</ClickCell>
+                  <ClickCell onClick={()=>openCellModal(d.developer+" — Projects",Object.fromEntries(d._projList.map((p,j)=>["#"+(j+1),p])))} style={{textAlign:"center",color:S.text}}>{d._projects}</ClickCell>
+                  <ClickCell>{fmt(d.leads)}</ClickCell>
+                  <ClickCell style={{color:S.blue}}>{fmt(d.ql)}</ClickCell>
+                  <ClickCell style={{color:S.green}}>{fmt(d.bookings)}</ClickCell>
+                  <ClickCell style={{color:d.revenue>0?S.green:S.textDim,fontWeight:d.revenue>0?700:400}}>{fmtCur(d.revenue)}</ClickCell>
+                  <ClickCell style={{color:d.pipeline>0?"#a78bfa":S.textDim}}>{fmtCur(d.pipeline)}</ClickCell>
+                  <ClickCell style={{color:S.red}}>{fmtCur(d.spend)}</ClickCell>
+                  <ClickCell style={{color:d._roi>2?S.green:d._roi>0?"#fbbf24":S.textDim,fontWeight:700}}>{d._roi>0?d._roi+"x":"—"}</ClickCell>
+                </tr>);
+              })()}
+            </tbody></table></div>
+          </div>
+        </div>)}
+
+        {/* ══ TL COMPARISON ══ */}
+        {tab === "tl_compare" && role === "Admin" && (<div style={{display:"flex",gap:14,flexWrap:"wrap"}}>
+          {TL_LIST.map(tl => {
+            const data = {};
+            [...MONTHS,"JFM"].forEach(m => {
+              const e = getEmps(tl,m); const l=e.reduce((a,x)=>a+x.leads,0),q=e.reduce((a,x)=>a+x.ql,0),r=e.reduce((a,x)=>a+x.revenue,0),s=e.reduce((a,x)=>a+x.spend,0);
+              data[m]={leads:l,ql:q,visit:e.reduce((a,x)=>a+x.visit,0),booking:e.reduce((a,x)=>a+x.booking,0),revenue:r,roas:s>0&&r>0?Math.round(r/s*100)/100:0,pipeline:e.reduce((a,x)=>a+x.pipeline,0),spend:s,lql:l>0?Math.round(q/l*1000)/10:0};
+            });
+            return (<div key={tl} style={{flex:"1 1 300px",background:S.card,borderRadius:12,border:"1px solid "+S.border,overflow:"hidden"}}>
+              <div style={{padding:"14px 16px",borderBottom:"1px solid "+S.border,background:S.accentDim}}>
+                <div style={{fontSize:16,fontWeight:700,color:S.accent}}>{tl}</div>
+              </div>
+              <div style={{padding:14}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
+                {["","Jan","Feb","Mar","JFM"].map(h=><th key={h} style={{padding:"6px",fontSize:10,color:h==="JFM"?S.accent:S.textDim,textTransform:"uppercase",textAlign:"right",fontWeight:h==="JFM"?700:600}}>{h}</th>)}
+              </tr></thead><tbody>
+                {[{l:"Leads",k:"leads",c:S.text},{l:"QL",k:"ql",c:S.blue},{l:"L→QL%",k:"lql",c:S.accent,pct:true},{l:"Visits",k:"visit",c:S.text},{l:"Bookings",k:"booking",c:S.green},{l:"Revenue",k:"revenue",c:S.green,cur:true},{l:"ROAS",k:"roas",c:S.green,roas:true},{l:"Pipeline",k:"pipeline",c:"#a78bfa",cur:true},{l:"Spend",k:"spend",c:S.red,cur:true}].map(r=><tr key={r.l}>
+                  <td style={{padding:"5px 6px",fontSize:11,color:S.textDim}}>{r.l}</td>
+                  {[...MONTHS,"JFM"].map(m=><ClickCell key={m} onClick={()=>openCellModal(tl+" "+r.l+" ("+m+")",{Value:r.cur?fmtCur(data[m][r.k]):r.pct?fmtPct(data[m][r.k]):r.roas?(data[m][r.k]>0?data[m][r.k]+"x":"—"):fmt(data[m][r.k])})} style={{textAlign:"right",color:m==="JFM"?S.accent:r.c,fontSize:12,padding:"5px 6px",fontWeight:m==="JFM"?700:400}}>
+                    {r.cur?fmtCur(data[m][r.k]):r.pct?fmtPct(data[m][r.k]):r.roas?(data[m][r.k]>0?data[m][r.k]+"x":"—"):fmt(data[m][r.k])}
+                  </ClickCell>)}
+                </tr>)}
+              </tbody></table></div>
+            </div>);
+          })}
+        </div>)}
+
+        {/* ══ TOP PERFORMERS ══ */}
+        {tab === "top_performers" && (()=>{
+          const tls = role === "Admin" ? TL_LIST : [selectedTL];
+          const empPerf = []; tls.forEach(tl=>getEmps(tl,month).forEach(e=>empPerf.push({...e,tl})));
+          return (<div>
+            <div style={{background:S.card,borderRadius:12,border:"1px solid "+S.border,overflow:"hidden"}}>
+              <div style={{padding:"14px 18px",borderBottom:"1px solid "+S.border,display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontSize:20}}>⭐</span><div><div style={{fontSize:15,fontWeight:700}}>Employee Leaderboard — <span style={{color:S.accent}}>{monthLabel}</span></div><div style={{fontSize:11,color:S.textDim}}>Sort by any column to find top & low performers</div></div>
+              </div>
+              <div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
+                {[["Rank",null],["Employee","name"],["TL","tl"],["Leads","leads"],["QL","ql"],["L→QL%","leadToQL"],["Visits","visit"],["QL→V%","qlToVisit"],["Booking","booking"],["V→B%","visitToBooking"],["Revenue","revenue"],["Pipeline","pipeline"],["Spend","spend"],["ROAS","roas"]].map(([l,f])=><TH key={l} label={l} field={f} table="empLead" />)}
+              </tr></thead><tbody>
+                {getSorted("empLead",empPerf).map((e,i)=>{
+                  const isTop=e.leadToQL>=40&&e.leads>=20, isLow=e.leadToQL<20&&e.leads>=20;
+                  return (<tr key={e.name+e.tl} style={{background:isTop?"rgba(52,211,153,0.04)":isLow?"rgba(248,113,113,0.04)":"transparent"}}>
+                    <td style={{padding:"10px 12px",borderBottom:"1px solid "+S.border,textAlign:"center"}}>{rankBadge(i)}</td>
+                    <ClickCell onClick={()=>openCellModal(e.name,{TL:e.tl,Leads:fmt(e.leads),QL:fmt(e.ql),"L→QL":fmtPct(e.leadToQL),Revenue:fmtCur(e.revenue)})} style={{color:S.text,fontWeight:600,whiteSpace:"nowrap"}}>
+                      {e.name} {isTop&&<span style={{fontSize:10,color:S.green,marginLeft:4}}>★ TOP</span>}{isLow&&<span style={{fontSize:10,color:S.red,marginLeft:4}}>▼ LOW</span>}
+                    </ClickCell>
+                    <ClickCell style={{color:S.accent,fontSize:12}}>{e.tl}</ClickCell>
+                    <ClickCell>{fmt(e.leads)}</ClickCell><ClickCell style={{color:S.blue}}>{fmt(e.ql)}</ClickCell>
+                    <ClickCell style={{color:ratioColor(e.leadToQL),fontWeight:700}}>{fmtPct(e.leadToQL)}</ClickCell>
+                    <ClickCell>{fmt(e.visit)}</ClickCell><ClickCell style={{color:ratioColor(e.qlToVisit)}}>{fmtPct(e.qlToVisit)}</ClickCell>
+                    <ClickCell style={{color:S.green}}>{fmt(e.booking)}</ClickCell><ClickCell style={{color:ratioColor(e.visitToBooking)}}>{fmtPct(e.visitToBooking)}</ClickCell>
+                    <ClickCell style={{color:e.revenue>0?S.green:S.textDim,fontWeight:e.revenue>0?700:400}}>{fmtCur(e.revenue)}</ClickCell>
+                    <ClickCell style={{color:e.pipeline>0?"#a78bfa":S.textDim}}>{fmtCur(e.pipeline)}</ClickCell>
+                    <ClickCell style={{color:S.red}}>{fmtCur(e.spend)}</ClickCell>
+                    <ClickCell style={{color:S.green,fontWeight:700}}>{(() => { if (e.spend <= 0) return "—"; const val = pipelineRoas ? (e.revenue + e.pipeline) : e.revenue; return val > 0 ? Math.round(val / e.spend * 100) / 100 + "x" : "—"; })()}</ClickCell>
+                  </tr>);
+                })}
+              </tbody></table></div>
+            </div>
+          </div>);
+        })()}
+
+        <div style={{textAlign:"center",padding:"32px 0 16px",color:S.textDim,fontSize:11}}>
+          Pune Operations Dashboard · Jan–Apr 2026 · {role} View · {dataSource === "live" ? "🟢 Live from Google Sheets" : "📦 Offline Data"}
+        </div>
+      </div>
+      <CellModal data={modal} onClose={() => setModal(null)} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Dashboard />);
+</script>
+</body>
+</html>
